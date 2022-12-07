@@ -32,7 +32,11 @@ Route::get('/lapangan', [LapanganController::class, 'index'])->name('lapangan.in
 Route::get('/lapangan/edit/{id}', [LapanganController::class, 'edit'])->name('lapangan.edit');
 Route::post('/lapangan/update/{id}', [LapanganController::class, 'update'])->name('lapangan.update');
 Route::post('/lapangan/delete/{id}', [LapanganController::class, 'delete'])->name('lapangan.delete');
+Route::get('/lapangan/trash', [LapanganController::class, 'trash'])->name('lapangan.trash');
+Route::get('/lapangan/hide/{id}', [LapanganController::class, 'hide'])->name('lapangan.hide');
 Route::get('/lapangan/search', [LapanganController::class, 'search'])->name('lapangan.search');
+Route::get('/lapangan/restore/{id}', [LapanganController::class, 'restore'])->name('lapangan.restore');
+Route::get('/lapangan/search/trash', [LapanganController::class, 'search_trash'])->name('lapangan.search_trash');
 
 Route::get('/penyewa/add', [penyewaController::class, 'create'])->name('penyewa.create');
 Route::post('/penyewa/store', [penyewaController::class, 'store'])->name('penyewa.store');

@@ -2,16 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use Hamcrest\Core\IsNot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class LapanganController extends Controller
 {
+    public function search_trash(Request $request)
+    {
+        $get_nama = $request->nama_lapangan;
+        $datas = DB::table('lapangan')->where('deleted_at', '<>', '' )->where('nama_lapangan', 'LIKE', '%'.$get_nama.'%')->get();
+        return view('lapangan.trash')
+        ->with('datas', $datas);
+    }
+    public function restore($id)
+    {
+        DB::update('UPDATE lapangan SET deleted_at = NULL WHERE id_lapangan = :id_lapangan', ['id_lapangan' => $id]);
+        return redirect()->route('lapangan.index')->with('success', 'Data lapangan berhasil di-restore');
+    }
+    public function trash()
+    {
+        $datas = DB::select('select * from lapangan where deleted_at is not null');
+        return view('lapangan.trash')
+            ->with('datas', $datas);
+    }
+    public function hide($id)
+    {
+        DB::update('UPDATE lapangan SET deleted_at=current_timestamp() WHERE id_lapangan = :id_lapangan', ['id_lapangan' => $id]);
+        return redirect()->route('lapangan.index')->with('success', 'Data lapangan berhasil dihapus');
+    }
     public function search(Request $request)
     {
         $get_nama = $request->nama;
-        $datas = DB::table('lapangan')->where('nama_lapangan', 'LIKE', '%' . $get_nama . '%')->get();
+        $datas = DB::table('lapangan')->where('deleted_at', NULL )->where('nama_lapangan', 'LIKE', '%' . $get_nama . '%')->get();
         return view('lapangan.index')->with('datas', $datas);
     }
     public function delete($id)
@@ -46,7 +70,7 @@ class LapanganController extends Controller
     }
     public function index()
     {
-        $datas = DB::select('select * from lapangan');
+        $datas = DB::select('select * from lapangan where deleted_at is null');
         return view('lapangan.index')
             ->with('datas', $datas);
     }

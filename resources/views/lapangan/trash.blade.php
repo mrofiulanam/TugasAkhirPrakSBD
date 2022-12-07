@@ -1,4 +1,4 @@
-@extends('lapangan.layout')
+@extends('Lapangan.layout')
 @section('content')
 <a href="{{ route('sewa.index') }}" type="button" class="btn btn rounded-3">Data Sewa</a>
 <a href="{{ route('lapangan.index') }}" type="button" class="btn btn rounded-3">Data Lapangan</a>
@@ -7,17 +7,16 @@
 <div style="margin-top: 20px">
     <div style="margin-bottom: +45px">
         <div style="float:right">
-            <a class="btn btn-outline-primary btn-sm" href="{{ route('lapangan.index') }}" type="button">Data Lapangan</a>
+            <a class="btn btn-outline-primary btn-sm" href="{{ route('lapangan.index') }}" type="button">Data lapangan</a>
             <a class="btn btn-outline-dark btn-sm" href="{{ route('lapangan.trash') }}" type="button">Trash</a>
         </div>
     </div>
 </div>
-<h4 class="mt-5">Data Lapangan</h4>
-<a href="{{ route('lapangan.create') }}" type="button" class="btn btn-success rounded-3">Tambah Lapangan</a>
+<h4 class="mt-5">Data Trash Lapangan</h4>
 <div class="form-search" style="float:right">
-    <form action="{{ route('lapangan.search') }}" method="get" accept-charset="utf-8">
+    <form action="{{ route('lapangan.search_trash') }}" method="get" accept-charset="utf-8">
         <div class="form-group" style="display:flex">
-            <input type="search" id="nama" name="nama" class="form-control" placeholder="Nama Lapangan">
+            <input type="text" id="nama_lapangan" name="nama_lapangan" class="form-control" placeholder="Cari Lapangan">
             <button type="submit" class="btn btn-secondary">Search</button>
         </div>
     </form>
@@ -33,6 +32,7 @@
             <th>No.</th>
             <th>Nama Lapangan</th>
             <th>Tipe Lapangan</th>
+            <th>Dihapus Pada</th>
         </tr>
     </thead>
     <tbody>
@@ -41,17 +41,16 @@
             <td>{{ $data->id_lapangan }}</td>
             <td>{{ $data->nama_lapangan }}</td>
             <td>{{ $data->tipe_lapangan }}</td>
-            <td>
-                <a href="{{ route('lapangan.edit', $data->id_lapangan) }}" type="button"
-                    class="btn btn-warning rounded-3">Ubah</a>
-                <!-- TAMBAHKAN KODE DELETE DI BAWAH BARIS INI -->
-                <a href="{{ route('lapangan.hide', $data->id_lapangan) }}" type="button"
-                    class="btn btn-danger rounded-3">Hapus</a>
+            <td>{{ $data->deleted_at }}</td>
+            <td style="float:right">
+                <a href="{{ route('lapangan.restore', $data->id_lapangan) }}" type="button"
+                    class="btn btn-success rounded-3">Restore</a>
+                <!-- TAMBAHKAN KODE DELETE DIBAWAH BARIS INI -->
                 <!-- Button trigger modal -->
-                <!--<button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal"
                     data-bs-target="#hapusModal{{ $data->id_lapangan }}">
                     Hapus
-                </button> -->
+                </button>
                 <!-- Modal -->
                 <div class="modal fade" id="hapusModal{{ $data->id_lapangan }}" tabindex="-1"
                     aria-labelledby="hapusModalLabel" aria-hidden="true">
