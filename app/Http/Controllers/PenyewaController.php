@@ -34,8 +34,8 @@ class penyewaController extends Controller
     }
     public function search(Request $request)
     {
-        $get_nama = $request->nama;
-        $datas = DB::table('penyewa')->where('nama_penyewa', 'LIKE', '%'.$get_nama.'%')->get();
+        $get_nama = $request->nama_penyewa;
+        $datas = DB::table('penyewa')->where('deleted_at', NULL )->where('nama_penyewa', 'LIKE', '%'.$get_nama.'%')->get();
         return view('penyewa.index')->with('datas', $datas);
     }
     public function delete($id)
@@ -70,7 +70,7 @@ class penyewaController extends Controller
     }
     public function index()
     {
-        $datas = DB::select('select * from penyewa');
+        $datas = DB::select('select * from penyewa sopir where deleted_at is null');
         return view('penyewa.index')
             ->with('datas', $datas);
     }
